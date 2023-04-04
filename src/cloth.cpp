@@ -109,10 +109,34 @@ void Cloth::simulate(double frames_per_sec, double simulation_steps, ClothParame
   double delta_t = 1.0f / frames_per_sec / simulation_steps;
 
   // TODO (Part 2): Compute total force acting on each point mass.
-
+  Vector3D total_external_force = Vector3D();
+  for (auto const &external_acceleration : external_accelerations) {
+      total_external_force += mass * external_acceleration;
+  }
+  for (auto &point_mass : point_masses) {
+      point_mass.forces = total_external_force;
+  }
+  for (auto &spring : springs) {
+      if ((spring.spring_type == STRUCTURAL && cp->enable_structural_constraints) ||
+          (spring.spring_type == BENDING && cp->enable_bending_constraints) ||
+          (spring.spring_type == SHEARING && cp->enable_shearing_constraints)) {
+          double ks = spring.spring_type == BENDING ? cp->ks * 0.2 : cp->ks;
+          Vector3D Fs = (spring.pm_b->position - spring.pm_a->position).unit();
+          Fs *= ks * ((spring.pm_a->position - spring.pm_b->position).norm() - spring.rest_length);
+          spring.pm_a->forces += Fs;
+          spring.pm_b->forces -= Fs;
+      }
+  }
 
   // TODO (Part 2): Use Verlet integration to compute new point mass positions
-
+  for (auto &point_mass : point_masses) {
+      if (!point_mass.pinned) {
+          Vector3D at = point_mass.forces / mass;
+          Vector3D xtdt = point_mass.position + (1 - cp->damping / 100.0) * (point_mass.position - point_mass.last_position) + at * delta_t * delta_t;
+          point_mass.last_position = point_mass.position;
+          point_mass.position = xtdt;
+      }
+  }
 
   // TODO (Part 4): Handle self-collisions.
 
@@ -122,6 +146,21 @@ void Cloth::simulate(double frames_per_sec, double simulation_steps, ClothParame
 
   // TODO (Part 2): Constrain the changes to be such that the spring does not change
   // in length more than 10% per timestep [Provot 1995].
+  for (auto &spring : springs) {
+      Vector3D direction = (spring.pm_b->position - spring.pm_a->position).unit();
+      double orig_length = (spring.pm_b->position - spring.pm_a->position).norm();
+      if (orig_length > spring.rest_length * 1.10) {
+          Vector3D diff = (orig_length - spring.rest_length * 1.10) * direction;
+          if (spring.pm_a->pinned && !spring.pm_b->pinned) {
+              spring.pm_b->position -= diff;
+          } else if (!spring.pm_a->pinned && spring.pm_b->pinned) {
+              spring.pm_a->position += diff;
+          } else if (!spring.pm_a->pinned && !spring.pm_b->pinned) {
+              spring.pm_a->position += diff/2;
+              spring.pm_b->position -= diff/2;
+          }
+      }
+  }
 
 }
 
