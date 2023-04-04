@@ -57,7 +57,59 @@
     </tr>
   </table>
 </div>
-<br>
+
+<h2 align="middle">Part II: Simulation via numerical integration</h2>
+    <p>Effects of changing ks: With smaller ks, the cloth stretches out more, resulting in more folds in the cloth. With large ks, the cloth has less folds. This should make sense because there is the same external force (gravity), but with a smaller ks, the springs are stretched out more by this external force. With a larger ks, the springs are not as stretched out, so the cloth is flatter.</p>
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="part2-largeks.png" align="middle" width="400px"/>
+        <figcaption>WIth ks = 10000.</figcaption>
+      </td>
+      <td>
+        <img src="part2-smallks.png" align="middle" width="400px"/>
+        <figcaption>With ks = 10.</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+    <p>Effects of changing density: with lower density, the cloth has less creases, with larger density, the cloth has more creases and is more stretched out. Since the gravitational external force is the same, when density is higher, the springs in the cloth are more stretched out to balance out the gravitational force, and vice versa for small density.</p>
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="part2-smalldensity.png" align="middle" width="400px"/>
+        <figcaption>With density = 3.</figcaption>
+      </td>
+      <td>
+        <img src="part2-largedensity.png" align="middle" width="400px"/>
+        <figcaption>With density = 60.</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+    <p>Effects of changing damping: With higher damping, the cloth falls faster, but takes much longer to reach stabilization. With lower famping, the cloth falls slower but reaches stabilization once the initial descent is reached. This makes sense since with smaller damping, each part of the cloth loses energy less fast, so there are lots of oscillations and pulling forces between different parts of the cloth, causing more creases and movements before stabilization. With large damping, the cloth loses energy much more quickly, so it falls more slowly but reaches a balancing point much more quickly.</p>
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="part2-smalldamping.png" align="middle" width="400px"/>
+        <figcaption>With damping = 0.02%.</figcaption>
+      </td>
+      <td>
+        <img src="part2-largedamping.png" align="middle" width="400px"/>
+        <figcaption>With damping = 0.8%.</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>Final resting state of shaded cloth, with default parameters: </p>
+<img src="part2.png" align="middle" width="400px" />
+
 
 </body>
 </html>
