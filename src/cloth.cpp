@@ -32,6 +32,73 @@ Cloth::~Cloth() {
 
 void Cloth::buildGrid() {
   // TODO (Part 1): Build a grid of masses and springs.
+    double width_size = width / num_width_points;
+    double height_size = height / num_height_points;
+
+    for (int y = 0; y < num_height_points; y++) {
+        for (int x = 0; x < num_width_points; x++) {
+
+            bool is_pinned = false;
+            for (auto pin_iter : pinned) {
+                if (pin_iter[0] == x && pin_iter[1] == y) {
+                    is_pinned = true;
+                    break;
+                }
+            }
+
+            Vector3D coord;
+            if (orientation == HORIZONTAL) {
+                coord = Vector3D(width_size * x, 1.0, height_size * y);
+            }
+            else {
+                double z = ((double) rand() / (double) RAND_MAX) * 0.002 - 0.001;
+                coord = Vector3D(width_size * x, height_size * y, z);
+            }
+
+            point_masses.emplace_back(PointMass(coord, is_pinned));
+
+        }
+    }
+
+    for (int y = 0; y < num_height_points; y++) {
+        for (int x = 0; x < num_width_points; x++) {
+            int curr = y * num_width_points + x;
+            int next;
+            // Structural
+            if (x > 0) {
+                next = y * num_width_points + x - 1;
+                Spring s = Spring(&point_masses[curr], &point_masses[next], STRUCTURAL);
+                springs.emplace_back(s);
+            }
+            if (y > 0) {
+                next = (y - 1) * num_width_points + x;
+                Spring s = Spring(&point_masses[curr], &point_masses[next], STRUCTURAL);
+                springs.emplace_back(s);
+            }
+            // Shearing
+            if (x > 0 && y > 0) {
+                next = (y - 1) * num_width_points + x - 1;
+                Spring s = Spring(&point_masses[curr], &point_masses[next], SHEARING);
+                springs.emplace_back(s);
+            }
+            if (x < num_width_points - 1 && y > 0) {
+                next = (y - 1) * num_width_points + x + 1;
+                Spring s = Spring(&point_masses[curr], &point_masses[next], SHEARING);
+                springs.emplace_back(s);
+            }
+            // Bending
+            if (x > 1) {
+                next = y * num_width_points + x - 2;
+                Spring s = Spring(&point_masses[curr], &point_masses[next], BENDING);
+                springs.emplace_back(s);
+            }
+            if (y > 1) {
+                next = (y - 2) * num_width_points + x;
+                Spring s = Spring(&point_masses[curr], &point_masses[next], BENDING);
+                springs.emplace_back(s);
+            }
+        }
+    }
 
 }
 
