@@ -110,6 +110,37 @@
 <p>Final resting state of shaded cloth, with default parameters: </p>
 <img src="part2.png" align="middle" width="400px" />
 
+<h2 align="middle">Part III: Handling collisions with other objects</h2>
+
+<p>As can be seen in the screenshots below, with ks=500, the cloth stretches out more. Thus, we see
+    the effect of gravity pulling down on the cloth a lot more, so the cloth is more drapy, fits the shape of the sphere better,
+    and is overall more "pulled down" by gravity. With ks=50000, the cloth is stretched out the least. Gravity still has an
+    effect on it, but not as much -- we can see that the cloth hangs over the sphere but doesn't hug the shape as much, and
+    the shape of the cloth stands more rigid, with less creases. With ks=5000, it is somewhere in the middle.</p>
+
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="part3-ks500.png" align="middle" width="400px"/>
+        <figcaption>ks = 500.</figcaption>
+      </td>
+      <td>
+        <img src="part3-ks5000.png" align="middle" width="400px"/>
+        <figcaption>ks = 5000.</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+        <img src="part3-ks50000.png" align="middle" width="400px"/>
+        <figcaption>ks = 50000.</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>Final resting state of cloth on plane, with default parameters: </p>
+<img src="part3-plane.png" align="middle" width="400px" />
 
 </body>
 </html>
