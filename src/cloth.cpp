@@ -182,7 +182,27 @@ void Cloth::build_spatial_map() {
 
 void Cloth::self_collide(PointMass &pm, double simulation_steps) {
   // TODO (Part 4): Handle self-collision for a given point mass.
+  double key = hash_position(pm.position);
+  vector<PointMass *> *candidates = map[key];
 
+  Vector3D final_correction_vector = Vector3D(0,0,0);
+
+  for (PointMass *p : *candidates) {
+      // prevent pm self collision
+      if (p->position == pm.position) {
+          continue;
+      }
+
+      if ((pm.position-p->position).norm() <= 2 * thickness) {
+          // correction vector
+          Vector3D d = p->position - pm.position;
+          d.normalize();
+          final_correction_vector += (2 * thickness - (pm.position-p->position).norm()) * d;
+      }
+  }
+
+  final_correction_vector /= simulation_steps;
+  pm.position += final_correction_vector;
 }
 
 float Cloth::hash_position(Vector3D pos) {
