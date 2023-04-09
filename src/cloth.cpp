@@ -175,7 +175,9 @@ void Cloth::build_spatial_map() {
   map.clear();
 
   // TODO (Part 4): Build a spatial map out of all of the point masses.
-
+  for (int i = 0; i < point_masses.size(); i++) {
+      map[hash_position(point_masses[i].position)]->push_back(&point_masses[i]);
+  }
 }
 
 void Cloth::self_collide(PointMass &pm, double simulation_steps) {
@@ -185,6 +187,14 @@ void Cloth::self_collide(PointMass &pm, double simulation_steps) {
 
 float Cloth::hash_position(Vector3D pos) {
   // TODO (Part 4): Hash a 3D position into a unique float identifier that represents membership in some 3D box volume.
+  double box_width = 3.0 * this->width / num_width_points;
+  double box_height = 3.0 * this->height / num_height_points;
+  double box_t = max(box_height, box_width);
+  double new_x = (pos.x - fmod(pos.x, box_width)) / box_width;
+  double new_y = (pos.y - fmod(pos.y, box_height)) / box_height;
+  double new_z = (pos.z - fmod(pos.z, box_t)) / box_t;
+
+  return M_PI * new_x + M_PI_2 / new_y - pow(new_z, M_PI_4);
 
   return 0.f; 
 }
