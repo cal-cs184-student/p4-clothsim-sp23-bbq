@@ -142,5 +142,67 @@
 <p>Final resting state of cloth on plane, with default parameters: </p>
 <img src="part3-plane.png" align="middle" width="400px" />
 
+<h2 align="middle">Part IV: Handling self-collsions</h2>
+  <p>The process of the cloth folding on itself with default parameters.</p>
+  <div align="middle">
+    <table style="width:100%">
+      <tr align="center">
+        <td>
+          <img src="part4-initial.png" align="middle" width="400px"/>
+        </td>
+        <td>
+          <img src="part4-middle.png" align="middle" width="400px"/>
+        </td>
+      </tr>
+      <tr align="center">
+        <td>
+          <img src="part4-plane.png" align="middle" width="400px"/>
+          <figcaption>Resting state</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <p>Effects of ks: As can be seen in the screenshots below, a lower ks (e.g. ks = 50) gives smaller wrinkles and they mostly concentrate
+  on the bottom. The folds are stiffer and pointer. A higher ks (e.g. ks = 900000) does the opposite, the cloth has fewer
+  wrinkles and the folds are smoother.</p>
+
+  <div align="middle">
+    <table style="width:100%">
+      <tr align="center">
+        <td>
+          <img src="part4-ks5.png" align="middle" width="400px"/>
+          <figcaption>ks = 5.</figcaption>
+        </td>
+        <td>
+          <img src="part4-ks90000.png" align="middle" width="400px"/>
+          <figcaption>ks = 90000 N/m</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <p>Effects of density: a lower density (e.g. density = 50) gives fewer wrinkles and the folds are smoother.
+    A higher density (e.g. ks = 900000) does the opposite, the cloth has more wrinkles and the folds are stiffer and pointer.
+  </p>
+
+  <div align="middle">
+    <table style="width:100%">
+      <tr align="center">
+        <td>
+          <img src="part4-density1.png" align="middle" width="400px"/>
+          <figcaption>density = 1 g/cm^2</figcaption>
+        </td>
+        <td>
+          <img src="part4-density150.png" align="middle" width="400px"/>
+          <figcaption>density = 150 g/cm^2</figcaption>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+</div>
+
+
 </body>
 </html>
