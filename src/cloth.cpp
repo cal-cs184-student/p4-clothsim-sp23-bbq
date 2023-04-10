@@ -139,6 +139,10 @@ void Cloth::simulate(double frames_per_sec, double simulation_steps, ClothParame
   }
 
   // TODO (Part 4): Handle self-collisions.
+  build_spatial_map();
+  for (auto &point_mass : point_masses) {
+      self_collide(point_mass, simulation_steps);
+  }
 
 
   // TODO (Part 3): Handle collisions with other primitives.
@@ -176,16 +180,21 @@ void Cloth::build_spatial_map() {
 
   // TODO (Part 4): Build a spatial map out of all of the point masses.
   for (int i = 0; i < point_masses.size(); i++) {
+      // if not in map, add pm to hashtable
+      if (map.find(hash_position(point_masses[i].position)) == map.end()) {
+          // no existing key
+          vector<PointMass *> *new_v = new vector<PointMass *>;
+          map[hash_position(point_masses[i].position)] = new_v;
+      }
       map[hash_position(point_masses[i].position)]->push_back(&point_masses[i]);
   }
 }
 
 void Cloth::self_collide(PointMass &pm, double simulation_steps) {
   // TODO (Part 4): Handle self-collision for a given point mass.
-  double key = hash_position(pm.position);
-  vector<PointMass *> *candidates = map[key];
+  vector<PointMass *> *candidates = map[hash_position(pm.position)];
 
-  Vector3D final_correction_vector = Vector3D(0,0,0);
+  Vector3D final_correction_vector = Vector3D();
 
   for (PointMass *p : *candidates) {
       // prevent pm self collision
@@ -193,16 +202,16 @@ void Cloth::self_collide(PointMass &pm, double simulation_steps) {
           continue;
       }
 
-      if ((pm.position-p->position).norm() <= 2 * thickness) {
+      Vector3D d = pm.position - p->position;
+      d.normalize();
+
+      if ((p->position - pm.position).norm() <= 2.0 * thickness) {
           // correction vector
-          Vector3D d = p->position - pm.position;
-          d.normalize();
-          final_correction_vector += (2 * thickness - (pm.position-p->position).norm()) * d;
+          final_correction_vector += (2.0 * thickness - (p->position - pm.position).norm()) * d;
       }
   }
 
-  final_correction_vector /= simulation_steps;
-  pm.position += final_correction_vector;
+  pm.position += (final_correction_vector / simulation_steps);
 }
 
 float Cloth::hash_position(Vector3D pos) {
@@ -210,13 +219,13 @@ float Cloth::hash_position(Vector3D pos) {
   double box_width = 3.0 * this->width / num_width_points;
   double box_height = 3.0 * this->height / num_height_points;
   double box_t = max(box_height, box_width);
-  double new_x = (pos.x - fmod(pos.x, box_width)) / box_width;
-  double new_y = (pos.y - fmod(pos.y, box_height)) / box_height;
-  double new_z = (pos.z - fmod(pos.z, box_t)) / box_t;
 
-  return M_PI * new_x + M_PI_2 / new_y - pow(new_z, M_PI_4);
+  Vector3D pos_new;
+    pos_new.x = (pos.x - fmod(pos.x, box_width)) / box_width;
+    pos_new.y = (pos.y - fmod(pos.y, box_height)) / box_height;
+    pos_new.z = (pos.z - fmod(pos.z, box_t)) / box_t;
 
-  return 0.f; 
+  return float(17 * pos_new.x + 17 / pos_new.y - pow(pos_new.z, 17));
 }
 
 ///////////////////////////////////////////////////////
