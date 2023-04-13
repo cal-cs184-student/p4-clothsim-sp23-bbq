@@ -203,6 +203,65 @@
   </div>
 </div>
 
+<h2 align="middle">Part V: Shaders</h2>
+<p>A shader program is a isolated program that calculates color, light, darkness during the rendering pipeline. They usually
+run parallel on GPU. They run on some stage of the graphic processor, and the code provide for these programmable stages.
+
+The vertex shader apply transformations to vertices such as their positions and normals. The output of the vertex shaders
+become the input for fragment shaders.
+
+Fragment shaders take the fragments produced by rasterization and use geometric attributes of these fragments to output color.</p>
+
+<h3>Task 1: Diffusion</h3>
+
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="part5-1.png" align="middle" width="400px"/>
+        <figcaption>Diffusion</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h3>Task 2: Blinn-Phong</h3>
+
+<p>The Blinn-Phong model is mostly similar to the Phong model, except that instead of using the reflection vector, Blinn-Phong
+uses a halfway vector that is exactly halfway between the light and the view directions. The close the halfway vector is
+with the surface normal, the higher the specular reflection.
+
+The Blinn-Phong model consists of 3 light contributions: ambient, diffusion, and specular. The diffusion lighting is a function
+of the light source with respect to the surface normal, and the close the light is to the object surface, the higher the light
+  intensity. The ambient lighting is a function of the light intensity that uniformly reflects off of the object. The specular
+lighting is a function between the light source, view direction, and the halfway vector mentioned earlier. </p>
+
+<div align="middle">
+  <table style="width:100%">
+    <tr align="center">
+      <td>
+        <img src="part5-2-diffuse.png" align="middle" width="400px"/>
+        <figcaption>Diffuse only</figcaption>
+      </td>
+      <td>
+        <img src="part5-2-ambient.png" align="middle" width="400px"/>
+        <figcaption>Ambient only</figcaption>
+      </td>
+    </tr>
+    <tr align="center">
+      <td>
+        <img src="part5-2-specular.png" align="middle" width="400px"/>
+        <figcaption>Specular only</figcaption>
+      </td>
+      <td>
+        <img src="part5-phong.png" align="middle" width="400px"/>
+        <figcaption>Blinn-Phong</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
 
 </body>
 </html>
