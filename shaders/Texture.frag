@@ -4,7 +4,7 @@ uniform vec3 u_cam_pos;
 uniform vec3 u_light_pos;
 uniform vec3 u_light_intensity;
 
-uniform sampler2D u_texture_1;
+uniform sampler2D u_texture_3;
 
 in vec4 v_position;
 in vec4 v_normal;
@@ -16,6 +16,6 @@ void main() {
   // YOUR CODE HERE
   
   // (Placeholder code. You will want to replace it.)
-  out_color = vec4(texture(u_texture_1, v_uv));
+  out_color = vec4(texture(u_texture_3, v_uv));
   out_color.a = 1;
 }

@@ -21,14 +21,11 @@ out vec4 out_color;
 
 float h(vec2 uv) {
   // You may want to use this helper function...
-  return 0.0;
+  return texture(u_texture_2, uv).r;
 }
 
 void main() {
   // YOUR CODE HERE
-  
-  // (Placeholder code. You will want to replace it.)
-  out_color = (vec4(1, 1, 1, 0) + v_normal) / 2;
-  out_color.a = 1;
+
 }
 
